@@ -18,9 +18,6 @@ echo ' '
 echo ' '
 
 #usage : lazy-cme.sh user password dc-ip domain in-scope-ips-list
-#echo 'Usage: lazy-cme.sh user password dc-ip domain in-scope-ips-list'
-
-
 
 #check for args
 	if [ $# -ne 5 ]; then
@@ -32,10 +29,10 @@ LOGFILE=$1-lazycme.log
 
 #starting up
 date >> $LOGFILE
-echo 'Starting script -- logging to '$1'-lazy-cme.log' 
+echo 'Starting script -- logging to '$1'-lazycme.log' 
 echo ' '
 echo ' '
-echo 'Outputs will be in command respective text files'
+echo 'Output is also logged to command oriented text files'
 echo ' '
 echo ' '
 
@@ -192,7 +189,7 @@ date >> $LOGFILE
 echo 'SHARES' >> $LOGFILE
 echo 'Grabbing Shares'
 echo '<<<<<<<<<<<<<<<<<<<<<<<<SHARES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-echo 'Runng: crackmapexec smb '$5' -u '$1' -p '$2' --shares | tee '$1'-shares.txt'
+echo 'Runng: crackmapexec smb '$5' -d '$4' -u '$1' -p '$2' --shares | tee '$1'-shares.txt'
 crackmapexec smb $5 -d $4 -u $1 -p $2 --shares | tee $1-shares.txt | tee -a $LOGFILE
 echo 'Gonna have to manually run --spider on shares because Im too stupid to figure it out right meow'
 #while read i; do crackmapexec smb $i -u $1 -p $2 --shares | tee '$1'-shares.txt; done < $5
@@ -228,12 +225,12 @@ echo 'PARSING SHARES' >> $LOGFILE
 echo 'Taking out all the useless shares like IPC, PRINT, and putting readable shares into ip-shares-onlyread.txt'
 cat $1-shares.txt | grep -vi 'read' | grep -vi 'ipc' | grep -vi 'print' | tee $1-shares-onlyread.txt | tee -a $LOGFILE
 echo 'Manually search shares, building this for the future, listing commands to copy and paste'
-echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern .doc | tee <ip>-shares-docs.txt'
-echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern .txt | tee <ip>-shares-txt.txt'
-echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern .csv | tee <ip>-shares-csv.txt'
-echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern .xls | tee <ip>-shares-xls.txt'
-echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern admin | tee <ip>-shares-admin.txt'
-echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern pass | tee <ip>-shares-pass.txt'
+echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern .doc | tee <ip>-shares-docs.txt'
+echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern .txt | tee <ip>-shares-txt.txt'
+echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern .csv | tee <ip>-shares-csv.txt'
+echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern .xls | tee <ip>-shares-xls.txt'
+echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern admin | tee <ip>-shares-admin.txt'
+echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern pass | tee <ip>-shares-pass.txt'
 
 echo ' '
 echo ' '
@@ -282,7 +279,7 @@ echo "You gonna need to download the sysvol stuff with: smbclient -W "$4" -U "$1
 
 #download sysvol
 #smbclient -W <domain> -U '$1%$2' \\\\$4\\sysvol
-# need to automate?
+# need to automate
 
 
 echo ' '
@@ -305,17 +302,20 @@ date >> $LOGFILE
 echo 'EXPLOITS' >> $LOGFILE
 echo 'Checking for exploits'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< EXPLOITS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M zerologon | tee vulns.txt'
 echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M zerologon' | tee -a vulns.txt
+echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M zerologon | tee -a vulns.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 -M zerologin | tee -a vulns.txt | tee -a $LOGFILE
+echo ' ' | tee -a vulns.txt
 sleep 5
 echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M nopac' | tee -a vulns.txt
 echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M nopac |tee -a vulns.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 -M nopac |tee -a vulns.txt | tee -a $LOGFILE
+echo '' | tee -a vulns.txt
 sleep 5
 echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M webdav' | tee -a vulns.txt
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M webdav | tee -a vulns.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 -M webdav | tee -a vulns.txt | tee -a $LOGFILE
+echo ' ' | tee -a vulns.txt
 sleep 5
 echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M shadowcoerce' | tee -a vulns.txt
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M shadowcoerce | tee -a vulns.txt'
@@ -351,11 +351,12 @@ echo ' '
 echo ' '
 echo ' '
 echo ' '
-echo ' Continuing '
+echo ' Continuing after 5 seconds'
 echo ' '
 echo ' '
 echo ' '
 echo ' '
+sleep 5
 
 ###############################################################################
 ###############################################################################
@@ -373,11 +374,12 @@ echo ' '
 echo ' '
 echo ' '
 echo ' '
-echo ' Continuing '
+echo ' Continuing after 5 seconds'
 echo ' '
 echo ' '
 echo ' '
 echo ' '
+sleep 5
 
 ###############################################################################
 ###############################################################################
@@ -395,12 +397,12 @@ echo ' '
 echo ' '
 echo ' '
 echo ' '
-echo ' Continuing '
+echo ' Continuing after 5 seconds'
 echo ' '
 echo ' '
 echo ' '
 echo ' '
-
+sleep 5
 
 ###############################################################################
 ###############################################################################
@@ -450,10 +452,8 @@ cat $LOGFILE | grep -vi 'esc' > cleaned-$LOGFILE
 
 #TODO
 
-# add time/date to all commands/outputs in log
-#sleep between commands?
+
 # add hash functionality
 # automate shares for crackmapexe
 # automate download sysvol
-
-
+# add if loop for null/anon user parsing
