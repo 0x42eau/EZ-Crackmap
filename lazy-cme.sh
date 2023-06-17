@@ -17,7 +17,7 @@ echo ' '
 echo ' ' 
 echo ' '
 
-#usage : meep.sh user password dc-ip domain in-scope-ips-list
+#usage : lazy-cme.sh user password dc-ip domain in-scope-ips-list
 #echo 'Usage: lazy-cme.sh user password dc-ip domain in-scope-ips-list'
 
 
