@@ -222,8 +222,8 @@ sleep 5
 
 date >> $LOGFILE
 echo 'PARSING SHARES' >> $LOGFILE
-echo 'Taking out all the useless shares like IPC, PRINT, and putting readable shares into ip-shares-onlyread.txt'
-cat $1-shares.txt | grep -vi 'read' | grep -vi 'ipc' | grep -vi 'print' | tee $1-shares-onlyread.txt | tee -a $LOGFILE
+echo 'Taking out all the useless shares like IPC, PRINT, and putting readable shares into '$1'-shares-read.txt'
+cat $1-shares.txt | grep -i 'read' | grep -vi 'ipc' | grep -vi 'print' | tee $1-shares-onlyread.txt | tee -a $LOGFILE
 echo 'Manually search shares, building this for the future, listing commands to copy and paste'
 echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern .doc | tee <ip>-shares-docs.txt'
 echo ' #crackmapexec smb <ip> -d '$4' -u '$1' -p '$2' --spider <share> --pattern .txt | tee <ip>-shares-txt.txt'
