@@ -436,6 +436,9 @@ echo ' '
 echo ' '
 echo ' '
 
+
+echo ' Cleaning up master log file'
+cat $LOGFILE | grep -vi 'esc' > cleaned-$LOGFILE
 ###############################################################################
 
 
