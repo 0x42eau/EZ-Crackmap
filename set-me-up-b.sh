@@ -9,4 +9,3 @@ alias turbonmap='sudo nmap -sS -Pn --host-timeout=1m --max-rtt-timeout=600ms --i
 alias nmap-all='nmap -p- -Pn -T4 --stats-every 20s -n -vvv -oA all-nmap -iL'
 alias nmap-users='nmap -p88 --script=krb5-enum-users --script-args="krb5-enum-users.realm='
 alias smbcrackmap='crackmapexec smb'
-
