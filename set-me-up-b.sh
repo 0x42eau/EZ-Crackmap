@@ -13,6 +13,8 @@ cp /opt/scripts/kali0-bashrc /home/kali/.bashrc
 
 exec bash
 
+apt install neo4j && apt install bloodhound
+
 #greps
 #alias grepi='grep -ai'
 #alias grepv='grep -avi'
