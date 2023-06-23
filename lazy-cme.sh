@@ -337,29 +337,6 @@ sleep 5
 
 ###############################################################################
 ###############################################################################
-#RDP ACCESS
-###############################################################################
-
-date >> $LOGFILE
-echo 'RDP ACCESS' >> $LOGFILE
-echo 'looking for RDP'
-echo '<<<<<<<<<<<<<<<<<<<<<<<< RDP ACCESS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-echo 'Running: crackmapexec rdp '$5' -d '$4' -u '$1' -p '$2' | tee '$1'-rdp.txt'
-crackmapexec rdp $5 -d $4 -u $1 -p $2 | tee $1-rdp.txt | tee -a $LOGFILE
-
-echo ' '
-echo ' '
-echo ' '
-echo ' '
-echo ' Continuing after 5 seconds'
-echo ' '
-echo ' '
-echo ' '
-echo ' '
-sleep 5
-
-###############################################################################
-###############################################################################
 #KERBEROASTING
 ###############################################################################
 
@@ -447,7 +424,30 @@ echo ' Cleaning up master log file'
 cat $LOGFILE | grep -vi 'esc' > cleaned-$LOGFILE
 ###############################################################################
 
+###############################################################################
+###############################################################################
+#RDP ACCESS
+###############################################################################
 
+echo 'Check for RDP access, it can take a while/lag the f out'
+echo 'crackmapexec rdp ips domain user password'
+#date >> $LOGFILE
+#echo 'RDP ACCESS' >> $LOGFILE
+#echo 'looking for RDP'
+#echo '<<<<<<<<<<<<<<<<<<<<<<<< RDP ACCESS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+#echo 'Running: crackmapexec rdp '$5' -d '$4' -u '$1' -p '$2' | tee '$1'-rdp.txt'
+#crackmapexec rdp $5 -d $4 -u $1 -p $2 | tee $1-rdp.txt | tee -a $LOGFILE
+
+#echo ' '
+#echo ' '
+#echo ' '
+#echo ' '
+#echo ' Continuing after 5 seconds'
+#echo ' '
+#echo ' '
+#echo ' '
+#echo ' '
+#sleep 5
 
 
 #TODO
