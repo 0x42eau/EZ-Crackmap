@@ -4,7 +4,7 @@ apt update -y
 apt upgrade -y
 
 sleep 3
-
+echo 'getting scripts'
 cd /opt && git clone https://github.com/cheesemonkey00/scripts.git
 
 mv /home/kali/.bashrc /home/kali/.bashrc.bak
