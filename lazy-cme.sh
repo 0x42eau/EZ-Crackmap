@@ -1,5 +1,6 @@
 #!/bin/bash
 #Triaxiom Security, 2023
+#v.00000000001
 #script for automating crackmapexec finding access, shares, passwords, kerberoasts, asreproasts, and exploits
 #PTH functionality incoming in 2038
 
