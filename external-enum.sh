@@ -1,10 +1,12 @@
+#!/bin/bash
 #external laziness
+#Triaxiom Security, 2023
 
-#usage : lazy-cme.sh user password dc-ip domain in-scope-ips-list
+#usage : ext-enum.sh user password dc-ip domain in-scope-ips-list
 
 #check for args
 	if [ $# -ne 3 ]; then
-			echo 'Usage: ext-enum.sh <scope-list.txt> <domain> <who you is>'
+			echo 'Usage: ext-enum.sh <scope-list.txt> <domain> <your name in home directory>'
 			exit -1
 	fi
 
@@ -22,13 +24,15 @@ echo ' '
 #echo 'Getting credmaster : git clone apt get https://github.com/knavesec/CredMaster.git'
 #cd /opt
 #apt get https://github.com/knavesec/CredMaster.git
-
+cd /opt
+git clone https://github.com/danielmiessler/SecLists.git
 apt install dirsearch -y
+
+
 
 date >> $LOGFILE
 cd /home/$3
-mkdir $2
-cd $2
+mkdir $2 && cd $2
 echo 'Running : mkdir nmap dirsearch amass harvester nikto scope li2user '$2' in /home/'$3'/'$2
 mkdir nmap dirsearch amass harvester nikto scope li2user
 
@@ -51,7 +55,11 @@ nmap -vvv -T4 -sU --top-ports 1337 $1 -oA nmap-udp | tee -a nmap/udp-nmap.txt >>
 
 date >> $LOGFILE
 echo 'Running nikto : nikto -h ' $2
-nikto -h https://$2 | tee -a nikto/nikto.txt
+nikto -h https://$2 | tee -a nikto/nikto.txt >> $LOGFILE
+echo 'Run nikto on individual hosts, we only ran it on provided domain :('
 
-dirsearch -u https://$2
+echo 'Running : dirsearch -u https://$2 -w /opt/SecLists/Discovery/Web-Content/raft-large-words.txt'
+dirsearch -u https://$2 -w /opt/SecLists/Discovery/Web-Content/raft-large-words.txt | tee -a dirsearch/dirsearch.txt >> $LOGFILE
 
+
+echo 'All done, go check your nummies!'
