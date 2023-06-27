@@ -35,8 +35,14 @@ LOGFILE=$1-lazycme.log
 # then crackmap blah blah $LOG
 
 #move config file to .bak; put new config with logging
+cd /opt
+git clone https://github.com/mpgn/CrackMapExec.git
+cd CrackMapExec 
+pip3 install .
+rm -f /root/.cme/workspaces/default/smb.db
+rm -f ~/.cme/workspaces/default/smb.db
 mv ~/.cme/cme.conf ~/.cme/cme.conf.bak
-printf '%s\n' '[CME]' 'workspace = default' 'last_used_db = smb' 'pwn3d_label = Pwn3d!' 'audit_mode =' 'log_mode = True' '' '[BloodHound]' 'bh_enabled = False' 'bh_uri = 127.0.0.1' 'bh_port = 7687' 'bh_user = neo4j' 'bh_pass = neo4j' '' '[Empire]' 'api_host = 127.0.0.1' 'api_port = 1337' 'username = empireadmin' 'password = Password123!' '' '[Metasploit]' 'rpc_host = 127.0.0.1' 'rpc_port = 55552' 'password = abc123' > ~/.cme/cme.conf
+printf '%s\n' '[CME]' 'workspace = default' 'last_used_db = smb' 'pwn3d_label = Pwn3d!' 'audit_mode =' 'log_mode = True' 'ignore_opsec = False' '' '[BloodHound]' 'bh_enabled = False' 'bh_uri = 127.0.0.1' 'bh_port = 7687' 'bh_user = neo4j' 'bh_pass = neo4j' '' '[Empire]' 'api_host = 127.0.0.1' 'api_port = 1337' 'username = empireadmin' 'password = Password123!' '' '[Metasploit]' 'rpc_host = 127.0.0.1' 'rpc_port = 55552' 'password = abc123' > ~/.cme/cme.conf
 sleep 5
 
 #starting up
@@ -44,7 +50,7 @@ date >> $LOGFILE
 echo 'Starting script -- logging to '$1'-lazycme.log' 
 echo ' '
 echo ' '
-echo 'Output is also logged to command oriented text files'
+echo 'Output is also logged to command oriented text files AND ~/.cme/logs'
 echo ' '
 echo ' '
 
