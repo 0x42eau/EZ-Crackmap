@@ -65,7 +65,7 @@ for pass in $(cat $3); dp
 done
 
 
-### trying to figure out sed with spaces
+### trying to figure out 2x each
 ## not going well lol :(
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
