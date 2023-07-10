@@ -49,8 +49,8 @@ sleep 10
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 alias crackmapexec="poetry run crackmapexec"
-sleep-timer="sleep $4m"
-echo "sleep set to ' $4 'mins.  Make sure this is good for sprays so no lockouts!"
+sleep_timer="sleep $4m"
+echo "sleep set to $4 mins.  Make sure this is good for sprays so no lockouts!"
 echo "sleeping for 15 seconds to give you time to cancel if needed"
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
