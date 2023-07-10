@@ -12,58 +12,6 @@
 # $4 - sleep timer
 # $5 - outlog file (not yet)
 
-
-newest=6
-
-current=$(crackmapexec | grep -ia 'version' | cut -d ':' -f 2 | cut -d '.' -f 1)
-
-if [[ $current < $newest ]]; then
-	  echo 'gotta update CME...please hold'
-	  echo 'removing apt package and downloading current github'
-	  cd /opt
-	  apt remove crackmapexec -y
-   	  rm -f /root/.cme/workspaces/default/smb.db
-	  rm -rf /opt/CrackMapExec
-	  apt install -y libssl-dev libffi-dev python-dev-is-python3 build-essential python3-poetry
-	  git clone https://github.com/mpgn/CrackMapExec
-	  cd CrackMapExec
-	  poetry install
-	  echo 'running cme to see if its good to go'
-	  poetry run crackmapexec
-	  if poetry run crackmapexec | grep -ai "bane"; then
-	    	echo "looks like we gucci"
-	  else
-	   	echo "might need to play with installing cme on your own, this failed"
-	    	exit -1
-	  fi
-else
-	  echo 'Current CME is good :)'
-	  exit 0
-fi
-
-echo '#!/bin/bash' > /usr/local/bin/crackmapexec
-echo 'cd /opt/CrackMapExec && poetry run crackmapexec'
-chmod +x /usr/local/bin/crackmapexec
-cd /home/kali
-echo "wait for it"
-sleep 5
-crackmapexec
-
-#checking to make sure it installed goodly
-
-sleep 10
-
-#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-alias crackmapexec="poetry run crackmapexec"
-sleep_timer="sleep $4m"
-echo "sleep set to $4 mins.  Make sure this is good for sprays so no lockouts!"
-echo "sleeping for 15 seconds to give you time to cancel if needed"
-
-#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-sleep 15
-
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
