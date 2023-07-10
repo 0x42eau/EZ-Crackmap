@@ -21,9 +21,9 @@ if [[ $current < $newest ]]; then
 	  echo 'gotta update CME...please hold'
 	  echo 'removing apt package and downloading current github'
 	  cd /opt
-	  apt remove crackmapexec
+	  apt remove crackmapexec -y
 	  rm -rf /opt/CrackMapExec
-	  apt install -y libssl-dev libffi-dev python-dev-is-python3 build-essential
+	  apt install -y libssl-dev libffi-dev python-dev-is-python3 build-essential python3-poetry
 	  git clone https://github.com/mpgn/CrackMapExec
 	  cd CrackMapExec
 	  poetry install
