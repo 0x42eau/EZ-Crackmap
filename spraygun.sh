@@ -42,6 +42,7 @@ else
 fi
 
 echo '#!/bin/bash' > /usr/local/bin/crackmapexec
+echo 'cd /opt/CrackMapExec && poetry run crackmapexec'
 chmod +x /usr/local/bin/crackmapexec
 cd /home/kali
 echo "wait for it"
