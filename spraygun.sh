@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#usage : ./spraygun.sh dc-ip userlist.txt passwords.txt sleep-in-mins (2x per sleep) 
+
 
 #script to auto-spray with cme
 
@@ -11,6 +11,14 @@
 # $3 - password list
 # $4 - sleep timer
 # $5 - outlog file (not yet)
+
+#usage : ./spraygun.sh dc-ip userlist.txt passwords.txt sleep-in-mins (2x per sleep) 
+
+#check for args
+	if [ $# -ne 5 ]; then
+		echo 'Usage: spraygun.sh dc-ip users-list pass-list sleep-time-in-mins (default 2x per time)'
+		exit -1
+	fi
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
