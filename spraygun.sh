@@ -50,11 +50,12 @@ sleep 10
 
 alias crackmapexec="poetry run crackmapexec"
 sleep-timer="sleep $4m"
-echo "sleep set to ' $5 'mins.  Edit script to change it"
+echo "sleep set to ' $4 'mins.  Make sure this is good for sprays so no lockouts!"
+echo "sleeping for 15 seconds to give you time to cancel if needed"
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-sleep 10
+sleep 15
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -62,7 +63,7 @@ sleep 10
 count=$(wc -l < $3)
 
 while [ $count -gt 0 ]; do
-	echo "Starting password spray with 2x every $5"
+	echo "Starting password spray with 2x every $4"
 	
 	head -n $count $3 > tmp.txt
 	
