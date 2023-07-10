@@ -33,11 +33,16 @@ else
 	  exit 0
 fi
 
-echo 'putting cme into /usr/local/bin/'
-echo '#!/bin/bash' > /usr/local/bin/crackmapexec
-echo 'cd /opt/CrackMapExec && poetry run crackmapexec'
-chmod +x /usr/local/bin/crackmapexec
-cd /home/kali
+# Below doesn't work because of "poetry run"??
+#echo 'putting cme into /usr/local/bin/'
+#echo '#!/bin/bash' > /usr/local/bin/crackmapexec
+#echo 'cd /opt/CrackMapExec && poetry run crackmapexec'
+#chmod +x /usr/local/bin/crackmapexec
+#cd /home/kali
+
+echo 'putting alias in .zshrc'
+echo 'alias crackmapexec=cd /opt/CrackMapExec && poetry run crackmapexec' >> .zshrc
+. /home/kali/.zshrc
 echo "wait for it"
 sleep 3
 crackmapexec
