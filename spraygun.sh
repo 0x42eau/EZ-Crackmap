@@ -43,7 +43,8 @@ while [ $count -gt 0 ]; do
 	done
 	
 	echo "Found creds: "
-	cat ./spraygun-log.log | grep -ai '[+]' | tee -a ./creds.txt
+	cat spraygun-log.log | grep -ai '[+]' | tee -a tmp-creds.txt
+ 	sort -u tmp-creds.txt >> creds.txt 
 	
 	sed -i "1,2d" $3
 	
