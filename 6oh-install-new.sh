@@ -1,9 +1,10 @@
 #!/bin/bash
-
+#v.03
 #update and pipx cme 6.0+
 
 apt remove crackmapexec -y
 rm -rf /root/.cme
+#Thanks, JR
 rm -rf /opt/CrackMapExec
 
 apt update -y
