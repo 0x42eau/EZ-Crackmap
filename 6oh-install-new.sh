@@ -38,9 +38,10 @@ pipx install .
 sleep 4
 
 echo 'adding to path, cme and crackmapexec should be global now'
-#PATH=$PATH:/root/.local/bin
+PATH=$PATH:/root/.local/bin
 echo 'PATH=$PATH:/root/.local/bin' >> /root/.zshrc
 #echo 'PATH=$PATH:/root/.local/bin' >> /home/kali/.zshrc
+# ^^ not working for normal kali user
 echo ''
 echo 'restarting /root/.zshrc'
 echo ''
