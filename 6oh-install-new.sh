@@ -2,6 +2,14 @@
 
 #update and bin cme 6.0+
 
+apt remove crackmapexec -y
+rm -f /root/.cme/workspaces/default/smb.db
+rm -f /root/.cme/workspaces/default/ldap.db
+rm -f /root/.cme/workspaces/default/ssh.db
+rm -f /root/.cme/workspaces/default/ftp.db
+rm -rf /opt/CrackMapExec
+
+
 apt update
 
 
@@ -11,24 +19,19 @@ current=$(crackmapexec | grep -ia 'version' | cut -d ':' -f 2 | cut -d '.' -f 1)
 
 if [[ $current < $newest ]]; then
 	echo 'gotta update CME...please hold'
-	echo 'removing apt package and downloading current github'
-	sleep 4
-	
-	cd /opt
-	apt remove crackmapexec -y
-	rm -f /root/.cme/workspaces/default/smb.db
-	rm -f /root/.cme/workspaces/default/ldap.db
-	rm -f /root/.cme/workspaces/default/ssh.db
-	rm -f /root/.cme/workspaces/default/ftp.db
-	rm -rf /opt/CrackMapExec
-	
+
+		
 	echo 'installing dependencies'
 	sleep 4
 	
 	apt install -y libssl-dev libffi-dev python-dev-is-python3 build-essential python3-poetry python3.11-venv
+	python3 -m pip install pipx
+	
+	echo 'cloning github and installing '
+	sleep 4
 	git clone https://github.com/mpgn/CrackMapExec
 	cd CrackMapExec
-	python3 -m pip install pipx
+	
 	
 	echo 'installing crackmap'
 	sleep 4
