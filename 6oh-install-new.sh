@@ -1,5 +1,5 @@
 #!/bin/bash
-#v.02
+
 #update and pipx cme 6.0+
 
 apt remove crackmapexec -y
@@ -52,6 +52,7 @@ echo ''
 echo 'restarting /root/.zshrc'
 echo ''
 source /root/.zshrc
+source /home/kali/.zshrc
 
 sleep 4
    
