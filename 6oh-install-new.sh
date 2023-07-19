@@ -3,8 +3,7 @@
 #update and pipx cme 6.0+
 
 apt remove crackmapexec -y
-rm -f /root/.cme
-
+rm -rf /root/.cme
 rm -rf /opt/CrackMapExec
 
 apt update -y
@@ -40,12 +39,12 @@ sleep 4
 echo 'adding to path, cme and crackmapexec should be global now'
 #PATH=$PATH:/root/.local/bin
 echo 'PATH=$PATH:/root/.local/bin' >> /root/.zshrc
-echo 'PATH=$PATH:/root/.local/bin' >> /home/kali/.zshrc
+#echo 'PATH=$PATH:/root/.local/bin' >> /home/kali/.zshrc
 echo ''
 echo 'restarting /root/.zshrc'
 echo ''
 source /root/.zshrc
-source /home/kali/.zshrc
+#source /home/kali/.zshrc
 
 sleep 4
    
