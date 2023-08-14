@@ -3,7 +3,7 @@
 #usage : ./spraygun.sh dc-ip userlist.txt passwords.txt sleep-in-mins (2x per sleep) 
 
 #script to auto-spray with cme
-
+# going to add failsafe for account lockouts to wait for user confirmation before spraying the network and locking out all the users
 
 # $1 - dc-ip
 # $2 - user list
