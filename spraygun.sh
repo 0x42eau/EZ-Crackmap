@@ -54,3 +54,6 @@ while [ $count -gt 0 ]; do
 done
 
 echo "End of file, check your creds!"
+
+#add locked-out accounts finding
+#add on screen timer for sprays
