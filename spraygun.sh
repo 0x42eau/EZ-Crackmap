@@ -47,8 +47,7 @@ while [ $count -gt 0 ]; do
  	sort -u tmp-creds.txt >> creds.txt 
 
   	#echo "Found creds: "
-	#cat spraygun-log.log | grep -ai '[+]' >> tmp-creds.txt
- 	#
+	#cat spraygun-log.log | grep -ai '\[+\]' >> tmp-creds.txt
  	#sort -u tmp-creds.txt | cut -d "\\" -f 2 >> creds.txt 
   	#cat creds.txt
 	
