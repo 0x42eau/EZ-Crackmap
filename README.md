@@ -6,7 +6,7 @@ repo for being lazy
   - makes global cme/crackmapexec vs running with poetry from cme dir
 
 spraygun
-  - takes a users file, password file, time (in minutes) and runs 2 password sprays/min
+  - takes a users file, password file, time (in minutes) and runs 2 password sprays/time
   - Removes tested passwords and puts into new file incase network interrupt
   - Spits out good passwords after each iteration (if found any)
 *** can lock out accounts super quickly if you don't know password policies ***
