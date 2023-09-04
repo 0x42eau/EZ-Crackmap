@@ -33,7 +33,7 @@ echo 'installing crackmap'
 echo '' 
 sleep 4
 
-pipx install .
+pipx install . --force
 
 sleep 4
 
