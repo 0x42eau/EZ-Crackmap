@@ -1,5 +1,5 @@
 #!/bin/bash
-#v.03
+#v.05
 #update and pipx cme 6.0+
 
 apt remove crackmapexec -y
