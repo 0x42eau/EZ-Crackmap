@@ -54,7 +54,7 @@ echo 'running cme to see if its good to go'
 sleep 4
    
 cd /
-if cme | grep -ai "bane"; then
+if cme | grep -ai "wick"; then
    echo '!!!!looks like we gucci!!!!'
 else
   echo "might need to play with installing cme on your own, this failed"
