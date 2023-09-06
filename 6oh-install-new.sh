@@ -24,7 +24,7 @@ echo 'cloning github and installing in /opt'
 echo '' 
 sleep 4
 cd /opt
-git clone https://github.com/mpgn/CrackMapExec
+git clone https://github.com/Porchetta-Industries/CrackMapExec.git
 cd CrackMapExec
 
 sleep 4
