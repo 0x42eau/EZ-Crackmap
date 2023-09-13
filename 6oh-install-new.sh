@@ -1,10 +1,10 @@
 #!/bin/bash
-#v.05
+#v.6
 #update and pipx cme 6.0+
 
 apt remove crackmapexec -y
 rm -rf /root/.cme
-#Thanks, JR
+
 rm -rf /opt/CrackMapExec
 
 apt update -y
@@ -61,4 +61,3 @@ else
    exit -1
 fi
 
-echo '<<<Tell Sebby thanks for setting it up! :)>>>'
