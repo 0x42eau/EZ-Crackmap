@@ -1,4 +1,6 @@
 # scripts
+----------WAITING ON NETEXEC/CME TO BE FIGURED OUT, MIGHT NEED TO UPDATE SOON----------
+
 repo for being lazy
 
 6oh-install
